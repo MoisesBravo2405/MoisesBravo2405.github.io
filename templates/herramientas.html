@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contabilidad Administrativa</title>
+    <link rel="icon" href="../Imagen/Umg.png" type="image/png">
+    <link rel="Stylesheet" href="../static/her.css">
+    <!-- Chart.js (para los gráficos) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <a href="../index.html" class="logo">
+            <img src="../Imagen/Umg.png"  alt="Logo Universidad Mariano Galvez" height="100px">
+            <h2 class="apartado">Contabilidad Administrativa</h2>
+        </a>
+        <nav>
+            <a href="./fundamentos.html" class="nav-link">Fundamentos</a>
+            <a href="./herramientas.html" class="nav-link">Herramientas</a>
+            <a href="./vidauni.html" class="nav-link">Fotografias</a>
+            <a href="./teoria.html" class="nav-link">Teoria</a>
+        </nav> 
+    </header>
+    <main>
+
+        <!-- RENTABILIDAD -->
+        <section>
+            <h2>1 Cálculo de Rentabilidad</h2>
+            <p>Permite determinar el porcentaje de ganancia sobre la inversión realizada.</p>
+            <p>Si una empresa invierte Q100,000 y obtiene una utilidad de Q25,000, su rentabilidad es del 25%.</p>
+            <label for="inversion">Inversión (Q):</label>
+            <input type="number" id="inversion" placeholder="Ej. 100000">
+
+            <label for="utilidad">Utilidad (Q):</label>
+            <input type="number" id="utilidad" placeholder="Ej. 25000">
+
+            <button onclick="calcularRentabilidad()">Calcular Rentabilidad</button>
+
+            <div class="resultado" id="resultadoRentabilidad"></div>
+        </section>
+
+        <!-- VAN -->
+        <section>
+            <h2>2 Cálculo de Valor Actual Neto (VAN)</h2>
+            <p>Calcula el valor presente de los flujos futuros descontados a una tasa de interés.</p>
+            <p>Fórmula: VAN = Σ (Flujo Neto / (1 + r)ⁿ) – Inversión Inicial</p>
+            <p>Ejemplo:</p>
+            <p>Inversión: Q10,000</p>
+            <p>Flujos anuales: Q3,000 durante 5 años</p>
+            <p>Tasa: 10%</p>
+            <p>VAN = Q3,000 × (1 - (1 + 0.10)^-5) / 0.10 - Q10,000 = Q1,373.</p>
+            <p>Como el VAN es positivo, el proyecto es rentable</p>
+            <label for="inversionVan">Inversión Inicial (Q):</label>
+            <input type="number" id="inversionVan" placeholder="Ej. 10000">
+
+            <label for="flujo">Flujo Anual (Q):</label>
+            <input type="number" id="flujo" placeholder="Ej. 3000">
+
+            <label for="anios">Número de Años:</label>
+            <input type="number" id="anios" placeholder="Ej. 5">
+
+            <label for="tasa">Tasa de Descuento (%):</label>
+            <input type="number" id="tasa" placeholder="Ej. 10">
+
+            <button onclick="calcularVAN()">Calcular VAN</button>
+
+            <div class="resultado" id="resultadoVAN"></div>
+        </section>
+        <section>
+            <h2>3 Análisis del Flujo de Efectivo</h2>
+            <p>Permite visualizar la entrada y salida de dinero durante varios periodos.</p>
+            <p>Flujo Neto = Entradas de Efectivo – Salidas de Efectivo</p>
+            <label for="entradas">Entradas de Efectivo (Q):</label>
+            <input type="number" id="entradas" placeholder="Ej. 15000">
+
+            <label for="salidas">Salidas de Efectivo (Q):</label>
+            <input type="number" id="salidas" placeholder="Ej. 12000">
+
+            <button onclick="calcularFlujo()">Calcular Flujo Neto</button>
+            <div class="resultado" id="resultadoFlujo"></div>
+
+            <canvas id="graficoFlujo"></canvas>
+        </section>
+    </main>
+
+
+   <script>
+        let chartRentabilidad, chartVAN, chartFlujo;
+
+        // 1️⃣ CÁLCULO DE RENTABILIDAD
+        function calcularRentabilidad() {
+            let inversion = parseFloat(document.getElementById("inversion").value);
+            let utilidad = parseFloat(document.getElementById("utilidad").value);
+            let resultadoDiv = document.getElementById("resultadoRentabilidad");
+
+            if (isNaN(inversion) || isNaN(utilidad) || inversion <= 0) {
+                resultadoDiv.innerHTML = "Por favor ingresa valores válidos.";
+                return;
+            }
+
+            let rentabilidad = (utilidad / inversion) * 100;
+            resultadoDiv.innerHTML = `La rentabilidad es de <b>${rentabilidad.toFixed(2)}%</b>.`;
+
+            // Gráfico de rentabilidad
+            let ctx = document.getElementById("graficoRentabilidad").getContext("2d");
+            if (chartRentabilidad) chartRentabilidad.destroy();
+            chartRentabilidad = new Chart(ctx, {
+                type: "doughnut",
+                data: {
+                    labels: ["Utilidad", "Inversión restante"],
+                    datasets: [{
+                        data: [utilidad, inversion - utilidad],
+                        backgroundColor: ["#d4af37", "#004b23"]
+                    }]
+                },
+                options: {
+                    plugins: { legend: { position: "bottom" } }
+                }
+            });
+        }
+
+        // 2️⃣ CÁLCULO DE VAN
+        function calcularVAN() {
+            let inversion = parseFloat(document.getElementById("inversionVan").value);
+            let flujo = parseFloat(document.getElementById("flujo").value);
+            let anios = parseInt(document.getElementById("anios").value);
+            let tasa = parseFloat(document.getElementById("tasa").value) / 100;
+            let resultadoDiv = document.getElementById("resultadoVAN");
+
+            if (isNaN(inversion) || isNaN(flujo) || isNaN(anios) || isNaN(tasa)) {
+                resultadoDiv.innerHTML = "Por favor ingresa todos los valores.";
+                return;
+            }
+
+            let van = -inversion;
+            let flujos = [];
+            for (let i = 1; i <= anios; i++) {
+                let flujoDescontado = flujo / Math.pow(1 + tasa, i);
+                flujos.push(flujoDescontado.toFixed(2));
+                van += flujoDescontado;
+            }
+
+            let mensaje = van > 0 
+                ? `El VAN es <b>Q${van.toFixed(2)}</b> → El proyecto es <b>rentable</b>.`
+                : `El VAN es <b>Q${van.toFixed(2)}</b> → El proyecto <b>no es rentable</b>.`;
+            resultadoDiv.innerHTML = mensaje;
+
+            // Gráfico de VAN
+            let ctx = document.getElementById("graficoVAN").getContext("2d");
+            if (chartVAN) chartVAN.destroy();
+            chartVAN = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: flujos.map((f, i) => `Año ${i+1}`),
+                    datasets: [{
+                        label: "Flujos descontados (Q)",
+                        data: flujos,
+                        backgroundColor: "#d4af37"
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+
+        // 3️⃣ CÁLCULO DE FLUJO DE EFECTIVO
+        function calcularFlujo() {
+            let entradas = parseFloat(document.getElementById("entradas").value);
+            let salidas = parseFloat(document.getElementById("salidas").value);
+            let resultadoDiv = document.getElementById("resultadoFlujo");
+
+            if (isNaN(entradas) || isNaN(salidas)) {
+                resultadoDiv.innerHTML = "Por favor ingresa valores válidos.";
+                return;
+            }
+
+            let flujoNeto = entradas - salidas;
+            let mensaje = flujoNeto >= 0 
+                ? `El flujo neto es positivo: <b>Q${flujoNeto.toFixed(2)}</b>.`
+                : `El flujo neto es negativo: <b>Q${flujoNeto.toFixed(2)}</b>.`;
+            resultadoDiv.innerHTML = mensaje;
+
+            // Gráfico de flujo
+            let ctx = document.getElementById("graficoFlujo").getContext("2d");
+            if (chartFlujo) chartFlujo.destroy();
+            chartFlujo = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: ["Entradas", "Salidas", "Flujo Neto"],
+                    datasets: [{
+                        data: [entradas, salidas, flujoNeto],
+                        backgroundColor: ["#d4af37", "#004b23", "#007f3d"]
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+    </script>
+
+    <footer>
+        <p>2025 Universidad Mariano Galvez | Proyecto Final </p>
+    </footer>
+</body>
+</html>

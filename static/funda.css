@@ -1,0 +1,60 @@
+body {
+    font-family: 'Open Sans';
+    color: #5a0404;
+}
+header{
+    display: flex;
+    min-height: 70px;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url(../Imagen/Campus.webp);
+    padding: 2%;
+}
+main{
+    padding-left: 20px;
+}
+.logo{
+    display: flex;
+    align-items: center;
+}
+.logo img{
+    height: 50px;
+    margin-right: 10px;
+}
+nav a{
+    font-weight: 600;
+    padding-right: 10px;
+    
+}
+nav a:hover{
+    color: white;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+p{
+    color:rgb(0, 0, 0);  
+}
+ol{
+    color: #000000;
+}
+h3{
+    color: rgb(68, 2, 2);
+    font-family: 'Open Sans';
+}
+footer {
+            text-align: center;
+            background-color: #0786cf;
+            color: white;
+            padding: 1rem;
+        }
+
+@media (max-width: 700px){
+    header{
+        flex-direction: column;
+    }
+    nav{
+        padding: 10px 0;
+    }
+}
