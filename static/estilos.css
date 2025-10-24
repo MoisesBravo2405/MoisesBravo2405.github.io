@@ -1,0 +1,150 @@
+body {
+    font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #ffffff;
+    color: #4d4c4c;
+    margin: 0;
+    padding: 0;
+    background-image: url(../Imagen/Campus.webp);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+
+header {
+    background-color: rgba(0, 64, 128, 0.85);
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    border-bottom: 3px solid #d4af37;
+}
+
+header img {
+    max-width: 100px;
+    height: auto;
+}
+
+header h1 {
+    margin: 10px 0;
+    font-size: 1.8rem;
+}
+
+header section p {
+    font-size: 1rem;
+}
+
+
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+.text {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;  
+    color: #3a3838; 
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+/* ======= BOTONES ======= */
+.botones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.boton {
+    background-color: #ffffff;
+    color: rgb(4, 63, 63);
+    padding: 15px 25px;
+    text-decoration: none;
+    border-radius: 15px;
+    border: 2px solid rgb(15, 10, 10);
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    display: inline-block;
+}
+
+.boton:hover {
+    background-color: #a00000;
+    color: white;
+    transform: translateY(-3px);
+}
+
+h3 {
+    color: #ffffff;
+    font-weight: normal;
+    margin-top: 10px;
+}
+
+/* ======= CADA SECCIÓN DE BOTÓN ======= */
+.botones > div {
+    background-color: rgba(0, 64, 128, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    width: 280px;
+    min-height: 160px;
+    text-align: center;
+}
+
+/* ======= PIE DE PÁGINA ======= */
+footer {
+    text-align: center;
+    padding: 15px;
+    background-color: #004080;
+    color: white;
+    font-weight: 500;
+    border-top: 3px solid #d4af37;
+}
+
+/* ======= RESPONSIVIDAD ======= */
+@media (max-width: 1024px) {
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    .botones > div {
+        width: 45%;
+    }
+}
+
+@media (max-width: 700px) {
+    body {
+        padding: 0;
+        background-attachment: scroll;
+    }
+
+    header img {
+        max-width: 80px;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    .text {
+        font-size: 1rem;
+    }
+
+    .botones {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .botones > div {
+        width: 90%;
+        margin: 10px 0;
+    }
+
+    .boton {
+        width: 100%;
+        font-size: 1rem;
+        padding: 12px 15px;
+    }
+
+    footer {
+        font-size: 0.9rem;
+    }
+}
